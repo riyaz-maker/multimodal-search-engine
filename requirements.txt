@@ -1,0 +1,10 @@
+# requirements.txt
+torch
+transformers
+Pillow
+psycopg2-binary
+pandas
+numpy
+fastapi
+uvicorn[standard]
+python-multipart
