@@ -1,0 +1,19 @@
+# Data & DB
+pandas
+psycopg2-binary
+
+# ML & Embeddings
+torch
+torchvision
+sentence-transformers
+transformers
+Pillow
+beautifulsoup4
+
+# Search & API
+elasticsearch==8.14.0
+pinecone
+fastapi
+uvicorn[standard]
+python-dotenv
+python-multipart
