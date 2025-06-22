@@ -1,8 +1,11 @@
 import ProductCard from './ProductCard';
-
-function ResultsList({ results }) {
-  if (!results || results.length === 0) {
+function ResultsList({ results, isLoading }) {
+  if (isLoading) {
     return null;
+  }
+  
+  if (!results || results.length === 0) {
+    return <p className="no-results">No products found. Try a different search!</p>;
   }
 
   return (

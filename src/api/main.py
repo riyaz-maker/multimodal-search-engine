@@ -3,6 +3,7 @@ import io
 import logging
 from typing import Optional, List, Dict
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import numpy as np
 import psycopg2
@@ -18,11 +19,31 @@ load_dotenv()
 # Initialize the FastAPI app
 app = FastAPI(title="Multimodal Search API")
 
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Initialize clients for Pinecone, Elasticsearch, and PostgreSQL
 try:
     embedder = EmbeddingModel()
+    
+    # Pinecone
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
     pinecone_index = pc.Index("multimodal-search")
+
+    # Elasticsearch
     es_client = Elasticsearch(os.getenv("ES_HOST", "http://localhost:9200"))
+
+    # PostgreSQL 
     pg_conn = psycopg2.connect(
         host=os.getenv("DB_HOST"), port=os.getenv("DB_PORT"),
         dbname=os.getenv("DB_NAME"), user=os.getenv("DB_USER"),
@@ -33,7 +54,7 @@ except Exception as e:
     logger.error(f"Failed to initialize clients during startup: {e}")
     raise
 
-
+# --- Helper Functions ---
 def query_pinecone(query_vector, top_k=20) -> List[str]:
     try:
         results = pinecone_index.query(vector=query_vector, top_k=top_k, include_metadata=False)
@@ -71,7 +92,6 @@ def reciprocal_rank_fusion(ranked_lists: List[List[str]], k=60) -> List[str]:
                 scores[item_id] = 0
             scores[item_id] += 1 / (k + rank)
     
-    # Sort items by their fused score in descending order
     sorted_items = sorted(scores.items(), key=lambda item: item[1], reverse=True)
     return [item_id for item_id, score in sorted_items]
 
@@ -87,9 +107,7 @@ def fetch_product_details_from_postgres(article_ids: List[str]) -> List[Dict]:
             products = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]
             
-            # Create a dictionary for quick lookups and preserve order
             product_map = {str(p[0]): dict(zip(columns, p)) for p in products}
-            
             ordered_products = [product_map[str(aid)] for aid in article_ids if str(aid) in product_map]
             return ordered_products
             
@@ -107,25 +125,25 @@ async def search(
     top_k: int = Form(10)
 ):
     if not text_query and not image_query:
-        raise HTTPException(status_code=400, detail="Provide a text query, an image, or both.")
+        raise HTTPException(status_code=400, detail="Provide a text query, an image or both.")
 
     query_vector = None
     text_emb = embedder.embed_text(text_query) if text_query else None
+    
     image_emb = None
     if image_query:
         try:
             image_bytes = await image_query.read()
             image = Image.open(io.BytesIO(image_bytes))
-            image_emb = embedder.model.encode(image, convert_to_numpy=True)
+            image_emb = embedder.model.encode(image, convert_to_numpy=True, show_progress_bar=False)
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"Invalid or corrupt image file: {e}")
 
-    # Fuse embeddings
     if text_emb is not None and image_emb is not None:
         query_vector = ((0.5 * text_emb) + (0.5 * image_emb)).tolist()
     elif image_emb is not None:
         query_vector = image_emb.tolist()
-    else:
+    else: 
         query_vector = text_emb.tolist()
     
     if query_vector is None:
