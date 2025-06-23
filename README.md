@@ -10,28 +10,23 @@
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
 </p>
 
-This provides a complete, end-to-end implementation of a multimodal search engine for e-commerce. It combines semantic vector search with the precision of traditional keyword search to deliver highly relevant results.
+This provides a complete, end-to-end implementation of a multimodal search engine for e-commerce. It addresses the fundamental "vocabulary gap" where users know what they want visually but struggle to describe it with text. By using a hybrid retrieval system, it combines the  semantic vector search with the of traditional keyword search to deliver highly relevant results.
 
-This repository is a blueprint for building user-facing AI system.
-
-## Key Features
+This repository is a blueprint for building AI system.
 
 ## Key Features
 
 * **Multimodal Search**: Allows users to search with text, an image, or a combination of both.
 
-* **Hybrid Retrieval**: Fuses results from two distinct search backends: a dense vector search (Pinecone + CLIP) for semantic meaning, and a sparse keyword search (Elasticsearch) for precision.
+* **Hybrid Retrieval**: Intelligently fuses results from a dense vector search (Pinecone + CLIP) for semantic meaning and a sparse keyword search (Elasticsearch).
 
-* **Result Fusion**: Implements Reciprocal Rank Fusion (RRF) to combine the ranked lists from both search backends, producing a single, highly relevant list of results.
+* **Result Fusion**: Implements Reciprocal Rank Fusion (RRF) to intelligently combine the ranked lists from both search backends, producing a single, highly relevant list of results.
 
-* **Fully Containerized Environment**: The entire application stack (databases, backend, frontend, servers) is defined and orchestrated with Docker and Docker Compose.
+* **Fully Containerized Environment**: The entire application stack (databases, backend, frontend, servers) is defined and orchestrated with Docker and Docker Compose for a one-command setup.
 
-* **Architecture**: Built with a FastAPI backend API that serves a React frontend, following a clean, disaggregated system architecture using best-in-class tools.
-
+* **Modern, Scalable Architecture**: Built with a FastAPI backend API that serves a React frontend, following a clean, disaggregated system architecture.
 
 ## Architectural Diagram
-
-The system follows a modern, service-oriented architecture where different components are specialized for their tasks. The FastAPI backend acts as the central orchestrator.
 
 ```mermaid
 graph TD
@@ -50,12 +45,12 @@ graph TD
         E["PostgreSQL"]
     end
 
-    A -->| "1. Search Request" | B
-    B -->| "2. Vector Query" | C
-    B -->| "2. Keyword Query" | D
-    C -->| "3. Semantic IDs" | F
-    D -->| "3. Keyword IDs" | F
-    F -->| "4. Ranked IDs" | B
-    B -->| "5. Fetch Details" | E
-    E -->| "6. Product Data" | B
-    B -->| "7. Final JSON Response" | A
+    A -- "1. Search Request" --> B;
+    B -- "2. Vector Query" --> C;
+    B -- "2. Keyword Query" --> D;
+    C -- "3. Semantic IDs" --> F;
+    D -- "3. Keyword IDs" --> F;
+    F -- "4. Ranked IDs" --> B;
+    B -- "5. Fetch Details" --> E;
+    E -- "6. Product Data" --> B;
+    B -- "7. Final JSON Response" --> A;
