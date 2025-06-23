@@ -10,18 +10,24 @@
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
 </p>
 
-This provides a complete, end-to-end implementation of a multimodal search engine for e-commerce. It combines semantic vector search with the precision of traditional keyword search and images to deliver highly relevant results.
+This provides a complete, end-to-end implementation of a multimodal search engine for e-commerce. It combines semantic vector search with the precision of traditional keyword search to deliver highly relevant results.
 
 This repository is a blueprint for building user-facing AI system.
 
 ## Key Features
 
-- **Intuitive Multimodal Search**: Allows users to search with text, an image, or a combination of both.
-- **Advanced Hybrid Retrieval**: Intelligently fuses results from two distinct search backends:
-    - **Dense (Vector) Search**: Uses Pinecone and a pretrained CLIP model (`clip-ViT-B-32`) to find semantically similar items based on visual and descriptive meaning.
-    - **Sparse (Keyword) Search**: Uses Elasticsearch and the BM25 algorithm for precise matching on product titles, categories, and other metadata.
-- **Result Fusion**: Implements Reciprocal Rank Fusion (RRF) to intelligently combine the ranked lists from both search backends, producing a single, highly relevant list of results.
-- **Fully Containerized Environment**: The entire application stack (databases, backend, frontend, servers) is defined and orchestrated with Docker and Docker Compose.
+## Key Features
+
+* **Multimodal Search**: Allows users to search with text, an image, or a combination of both.
+
+* **Hybrid Retrieval**: Fuses results from two distinct search backends: a dense vector search (Pinecone + CLIP) for semantic meaning, and a sparse keyword search (Elasticsearch) for precision.
+
+* **Result Fusion**: Implements Reciprocal Rank Fusion (RRF) to combine the ranked lists from both search backends, producing a single, highly relevant list of results.
+
+* **Fully Containerized Environment**: The entire application stack (databases, backend, frontend, servers) is defined and orchestrated with Docker and Docker Compose.
+
+* **Architecture**: Built with a FastAPI backend API that serves a React frontend, following a clean, disaggregated system architecture using best-in-class tools.
+
 
 ## Architectural Diagram
 
