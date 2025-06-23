@@ -86,3 +86,8 @@ Vector Database: Pinecone
 Keyword Search: Elasticsearch
 Primary Database: PostgreSQL
 Orchestration: Docker & Docker Compose
+
+# Screenshots
+![E324A702-255F-41C8-A579-22CD14B65B4E_1_105_c](https://github.com/user-attachments/assets/1e2a1d58-f194-43a7-a929-7013d7b02a91)
+![F7870CB9-1C50-4BCC-9EDA-3C2600EAA514_1_105_c](https://github.com/user-attachments/assets/d1825ab2-da2d-40d2-9c24-1fab135e182f)
+![5F382292-612B-4D7C-8FD8-5E92FF5DA642_1_105_c](https://github.com/user-attachments/assets/472f78de-ac46-4aa6-a763-b9a61a120ecf)
