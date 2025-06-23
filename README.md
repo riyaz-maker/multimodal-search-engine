@@ -29,26 +29,30 @@ The system follows a modern, service-oriented architecture where different compo
 
 ```mermaid
 graph TD
-    subgraph User Facing
+    subgraph "User Interface"
         A[React Frontend]
     end
 
-    subgraph Backend API
+    subgraph "Backend API"
         B(FastAPI Server)
     end
     
-    subgraph Data & Search Backends
-        C{Pinecone Vector DB}
-        D{Elasticsearch}
-        E(PostgreSQL Catalog)
+    subgraph "Data & Search Backends"
+        C[Pinecone Vector DB]
+        D[Elasticsearch]
+        E[PostgreSQL Catalog]
     end
 
-    A -->|HTTP Search Request| B;
-    B -->|1. Vector Query| C;
-    B -->|1. Keyword Query| D;
-    C -->|2. Semantic Results| B;
-    D -->|2. Keyword Results| B;
-    B -->|3. Fuse Results (RRF)| F{Final Ranked IDs};
-    F -->|4. Fetch Details| E;
-    E -->|5. Product Details| B;
-    B -->|6. JSON Response| A;
+    A -->|1. HTTP Search Request| B
+    B -->|2. Parallel Queries| C
+    B -->|2. Parallel Queries| D
+    
+    C -->|3. Semantic Results| B
+    D -->|3. Keyword Results| B
+    
+    B -->|4. Fuse & Rank (RRF)| F(Final Ranked IDs)
+    
+    F -->|5. Fetch Details by ID| E
+    E -->|6. Full Product Details| B
+    
+    B -->|7. Final JSON Response| A
