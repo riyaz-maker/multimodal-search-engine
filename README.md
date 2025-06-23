@@ -54,3 +54,18 @@ graph TD
     B -- "5. Fetch Details" --> E;
     E -- "6. Product Data" --> B;
     B -- "7. Final JSON Response" --> A;
+
+## Getting Started
+
+This project is fully containerized. All you need is Git and Docker with Docker Compose installed on your machine.
+
+### 1. Prerequisites
+
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/products/docker-desktop/) (which includes Docker Compose)
+
+### 2. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd multimodal-search-engine
