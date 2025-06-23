@@ -50,12 +50,12 @@ graph TD
         E["PostgreSQL"]
     end
 
-    A -- "1. Search Request" --> B;
-    B -- "2. Vector Query" --> C;
-    B -- "2. Keyword Query" --> D;
-    C -- "3. Semantic IDs" --> F;
-    D -- "3. Keyword IDs" --> F;
-    F -- "4. Ranked IDs" --> B;
-    B -- "5. Fetch Details" --> E;
-    E -- "6. Product Data" --> B;
-    B -- "7. Final JSON Response" --> A;
+    A -->| "1. Search Request" | B
+    B -->| "2. Vector Query" | C
+    B -->| "2. Keyword Query" | D
+    C -->| "3. Semantic IDs" | F
+    D -->| "3. Keyword IDs" | F
+    F -->| "4. Ranked IDs" | B
+    B -->| "5. Fetch Details" | E
+    E -->| "6. Product Data" | B
+    B -->| "7. Final JSON Response" | A
