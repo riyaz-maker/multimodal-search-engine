@@ -25,32 +25,3 @@ This repository is a blueprint for building AI system.
 * **Fully Containerized Environment**: The entire application stack (databases, backend, frontend, servers) is defined and orchestrated with Docker and Docker Compose for a one-command setup.
 
 * **Modern, Scalable Architecture**: Built with a FastAPI backend API that serves a React frontend, following a clean, disaggregated system architecture.
-
-## Architectural Diagram
-
-```mermaid
-graph TD
-    subgraph "User Interface"
-        A["React Frontend"]
-    end
-
-    subgraph "Backend Logic"
-        B["FastAPI Server"]
-        F["Fusion Logic (RRF)"]
-    end
-
-    subgraph "Data Stores"
-        C["Pinecone"]
-        D["Elasticsearch"]
-        E["PostgreSQL"]
-    end
-
-    A -- "1. Search Request" --> B;
-    B -- "2. Vector Query" --> C;
-    B -- "2. Keyword Query" --> D;
-    C -- "3. Semantic IDs" --> F;
-    D -- "3. Keyword IDs" --> F;
-    F -- "4. Ranked IDs" --> B;
-    B -- "5. Fetch Details" --> E;
-    E -- "6. Product Data" --> B;
-    B -- "7. Final JSON Response" --> A;
